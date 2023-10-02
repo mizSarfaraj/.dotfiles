@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# export TERM=screen-256color
+
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+HISTFILE="$XDG_DATA_HOME"/zsh/history
+export HISTCONTROL=erasedups:ignoredups:ignoreboth
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+export PATH="$HOME/.local/bin":$PATH
+export PATH=/usr/local/bin:$PATH
+export PATH="$HOME/.node_modules/bin":$PATH
+export PATH=$HOME/.cargo/bin:$PATH
+export PATH=$HOME/.local/share/go/bin:$PATH
+export GOPATH=$HOME/.local/share/go
+export NVM_DIR="$HOME/.config/nvm"
+
+export MANPAGER='nvim +Man!'
+export MANWIDTH=999
+export EDITOR='nvim'
+export VISUAL='nvim'
+export BROWSER='brave-browser'
+
+export AUDIO='audacious'
+export VIDEO='mpv'
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+eval "`pip completion --zsh`"

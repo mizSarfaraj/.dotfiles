@@ -1,0 +1,35 @@
+#!/bin/sh
+
+List_session() {
+  tmux -2u ls | awk 'BEGIN { F=":"} ; {print $1}'
+}
+
+tms() {
+  while
+  do
+    echo - -e "\n\n-----------------------------------------------------\n\n"
+    echo -e "\t\n 1) Running Session.\n 2) New Session \n 3) Quit."
+    echo -e -n "\n\nChoose? [1/2/3] : "
+    read var
+    case $var in
+      1 | running-session)
+        List_session
+        echo -n " -> "
+        read ssname
+        tmux -2u a -t $ssname
+        break
+        ;;
+      2 | new-session)
+        echo -n -e "\nSession name : "
+        read newname
+        tmux -2u new-session -s "$newname"
+        break;
+        ;;
+      3 | Quit)
+        echo "Abort."
+        break;;
+      **)
+        echo -e "\nWrong Answer. Try again.";;
+    esac
+  done
+}

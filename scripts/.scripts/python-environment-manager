@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+
+
+create-env(){
+  while
+  do
+    echo -e "\n=======================================================================\n"
+    echo -n -e "\n\t\tUsing which tool? \n\n\t1. Generic python3\n\t2. virtualenv\n\t3. Quit.\n\n"
+
+    echo -n -e "\n Enter answer? [1/2/3] : "
+    read chc
+
+    case "$chc" in
+      1)
+        echo -e "\n-----------------------------"
+        echo -n -e "\nName of the environment : "
+        read name
+        if [[ ! -d $HOME/.venv/ ]]; then
+            mkdir -p $HOME/.venv/
+        fi
+        if [[ -n "$name" ]]; then
+            python3 -m venv $HOME/.venv/"$name"
+        fi
+        break
+        ;;
+      2)
+        echo -e "\n-----------------------------"
+        echo -n -e "\nName of the environment : "
+        read name
+        if [[ ! -d $HOME/.venv/ ]]; then
+            mkdir -p $HOME/.venv/
+        fi
+        if [[ -n "$name" ]]; then
+            virtualenv $HOME/.venv/"$name"
+        fi
+        break
+        ;;
+      3)
+        echo -e "\nAbort\n"
+        break
+        ;;
+      **)
+        echo -n -e "\t\t\tTry Again.\n"
+        ;;
+    esac
+  done
+}
+
+activate-env(){
+  local dracula="fg:#d6acff,fg+:#ffb86c,border:#50fa7b"
+  local select_env=$(la $HOME/.venv/ | fzf --color=$dracula --margin 5,10% --info=inline --bind='ctrl-q:abort' --header='<ctrl+q> Quit | <Enter> execute')
+
+	if [[ -n "$select_env" ]]; then
+		source "$HOME/.venv/$select_env/bin/activate"
+	fi
+}
+
+dlt-env(){
+
+  local dracula="fg:#d6acff,fg+:#ffb86c,border:#50fa7b"
+	local select_env=$(la $HOME/.venv/ | fzf --color=$dracula --margin 5,5% --no-unicode --info=inline)
+
+    if [[ -n "$select_env" ]]; then
+		rm -rfI "$HOME/.venv/$select_env/"
+    fi
+}

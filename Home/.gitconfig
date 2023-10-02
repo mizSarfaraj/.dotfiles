@@ -1,0 +1,26 @@
+[user]
+	name = RamizSarfaraj
+  email = 69590366+RamizSarfaraj@users.noreply.github.com
+[alias]
+    st = status
+    cm = commit -m
+    ps = push
+    pl = pull
+    mg = merge
+    bn = branch
+    co = checkout
+    ft = fetch
+    df = diff
+    a = add
+[color]
+    ui = auto
+[color "status"]
+    added = green
+    changed = red bold
+    untracked = magenta bold
+[color "branch"]
+    remote = yellow
+[core]
+	editor = nvim
+[help]
+	autocorrect = 1

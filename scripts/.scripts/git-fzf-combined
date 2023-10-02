@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+
+# stage unstaged file
+fgA(){
+
+    Color="fg:250,fg+:50,border:152"
+    Preview="batcat --color=always --theme=zenburn --style='numbers,header,changes' --line-range=:500 {}"
+    Bind="space:toggle-preview,ctrl-q:abort"
+
+    local gitadd=(
+    git ls-files -o --exclude-standard )
+
+    local fzf=(
+    fzf
+    -m --margin 10%  --inline-info
+    --preview-window=right:70%
+    --color=$Color --preview=$Preview --bind=$Bind)
+
+    git add $( $gitadd | $fzf )
+
+}
+
+# add files using fzf
+fga(){
+
+	Color="fg:250,fg+:50,border:152"
+    Preview="git diff $@ --color=always -- {-1}"
+    Bind="space:toggle-preview,ctrl-q:abort"
+
+    local gitvar=(
+    git ls-files -m)
+
+    local fzf=(
+    fzf
+    -m  --margin 3,5% --info=inline
+    --preview-window=right:70%
+    --color=$Color --preview $Preview --bind=$Bind )
+
+
+    git add $($gitvar | $fzf )
+}
+
+fgr(){
+
+    Color="fg:250,fg+:50,border:152"
+    Preview="git diff $@ --color=always -- {-1}"
+    Bind="space:toggle-preview,ctrl-q:abort"
+
+    local gitvar=(git diff --name-only --cached)
+
+    local fzf=(
+    fzf
+    -m  --margin 3,5% --info=inline
+    --preview-window=right:70%
+    --color=$Color --preview $Preview --bind=$Bind )
+
+
+    git restore --staged $($gitvar | $fzf )
+}
+
+# sees the git diff using fzf.
+fgd() {
+
+    Color="fg:250,fg+:50,border:152"
+    Preview="git diff $@ --color=always -- {-1}"
+    Bind="space:toggle-preview,ctrl-q:abort"
+
+    local gitvar=(
+    git diff $@ --name-only )
+    local fzf=(
+    fzf
+    -m --margin 3,5% --info=inline
+    --preview-window=right:75%
+    --color=$Color --preview $Preview --bind=$Bind )
+
+    $gitvar | $fzf
+}
+
+
+# git log show with fzf
+fgl() {
+
+  # param validation
+  if [[ ! `git log -n 1 $@ | head -n 1` ]] ;then
+    return
+  fi
+
+  # filter by file string
+  local filter
+  # param existed, git log for file if existed
+  if [ -n $@ ] && [ -f $@ ]; then
+    filter="-- $@"
+  fi
+
+  # git command
+  local gitlog=(
+    git log
+    --graph --color=always
+    --abbrev=7
+    --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr'
+    $@
+  )
+
+  # fzf command
+  local fzf=(
+    fzf
+    --ansi --no-sort --tiebreak=index --margin 3%
+    --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter; }; f {}"
+    --preview-window=right:70%
+    --bind "ctrl-q:abort,ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % $filter | less -R') << 'FZF-EOF'
+                {}
+                FZF-EOF"
+  )
+
+  # piping them
+  $gitlog | $fzf
+}
+# switch branch using fzf
+fbr() {git checkout $(git branch | fzf)}
+

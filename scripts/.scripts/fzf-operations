@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+
+
+j(){
+  # jump to any directory that isn't ignored by git.
+  local dracula="fg:#d6acff,fg+:#ffb86c,border:#50fa7b"
+  local Preview="tree -L 3 {}"
+  local Bind="space:toggle-preview"
+  cd $HOME && cd "$(fdfind -H -t d -E .git/ | fzf --info inline --no-bold  --margin 3,2% --no-hscroll --color="$dracula" --preview="$Preview"  --bind="$Bind")"
+}
+
+
+ji(){
+  # jump to any sub-directory that isn't ignored by git in presenet directory.
+  local dracula="fg:#d6acff,fg+:#ffb86c,border:#50fa7b"
+  local Preview="tree -a -L 1 {}"
+  local Bind="space:toggle-preview"
+  cd "$(fdfind -H -t d -E .git/ | fzf --info inline --no-bold --margin 4,2% --no-hscroll --color="$dracula" --preview="$Preview" --bind="$Bind" )"
+
+}
+
+
+e() {
+  # open file in presenet directory. Respects .gitignore.
+  local dracula="fg:#ffb86c,fg+:#d6acff,border:#50fa7b"
+  local Preview="batcat --color=always --theme=zenburn --style='numbers,header,changes' --line-range=:500 {}"
+  local Bind="space:toggle-preview"
+  local file="$(fdfind -t f -H -I -E .git/ | fzf -m  --no-bold --margin 3,2% --no-hscroll --color="$dracula" --preview $Preview --preview-window=right:60% --bind="$Bind")"
+
+  if [[ -n "$file" ]]; then
+    $EDITOR "$file"
+  fi
+}
+
+
+ee() {
+  # open any file on system that isn't ignored by git.
+  local dracula="fg:#ffb86c,fg+:#d6acff,border:#50fa7b"
+  local Preview="batcat --color=always --theme=zenburn --style='numbers,header,changes' --line-range=:500 {}"
+  local Bind="space:toggle-preview"
+  cd $HOME
+  local file="$(fdfind -t f -H -I -E .git/ | fzf -m  --no-bold --margin 3,2% --no-hscroll --color="$dracula" --preview $Preview --preview-window=right:60% --bind="$Bind")"
+
+  if [[ -n "$file" ]]; then
+    $EDITOR "$file"
+  fi
+}
+

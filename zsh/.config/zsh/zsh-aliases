@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+alias cfz='$EDITOR $ZDOTDIR/zshrc'
+
+# aliases
+#--------------------------------------------------------------------------------------------#
+# git aliases
+alias gl="git log"
+alias gcn='git clone'
+alias gt='git status'
+alias ga='git add'
+alias gc='git commit -m'
+alias gca='git commit -m -a'
+alias gps='git push'
+alias gpl='git pull'
+alias gb='git branch'
+alias gck='git checkout'
+alias gcb='git checkout -b'
+alias gm='git merge'
+alias gf='git fetch'
+alias gd='git diff'
+
+alias lgit='lazygit'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# custom system aliases
+alias reload='source $ZDOTDIR/.zshrc'
+# alias ls='exa'
+# alias la='exa -a'
+# alias ll='exa -l'
+# alias lla='exa -la'
+# alias lg='exa -a | grep'
+
+alias q='exit'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias .3='cd ../../..'
+
+alias v="nvim -p"
+alias py='python3'
+alias pp='pip3'
+
+alias jnb='jupyter notebook'
+alias bat='batcat'
+alias tm='tmux -2u'
+
+alias open='xdg-open'
+alias rm='rm -Iv '
+alias rmf='rm -rf'
+alias mv='mv -iv '
+alias mkdir='mkdir -pv '
+alias md='mkdir'
+alias vcode='flatpak run com.vscodium.codium' # vcode for vscodium.
+
+
+
+
+# trash cli aliases | if we remove a file or folder using rm command the file or folder gets deleted permanently. That's where trash-cli comes into play. It helps us direct our file & folder to trash. And gives us the option if we want to restore the file or note.
+# https://github.com/andreafrancia/trash-cli
+
+# trash = trash-put ( default ) # put the file into the trash can
+alias trash='trash -v'
+alias tmt='trash-empty'         # empty the trash
+alias tlist='trash-list'        # list trashed file
+alias trestore='trash-restore'  # restore a trashed file
+# trash-rm                      # remove individual files from the trash.
+
